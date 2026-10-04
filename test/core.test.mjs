@@ -7,7 +7,7 @@ import path from 'node:path';
 import {
   resolveConfig, protectedSeqs, scanLarge, renderLargeList, labelOf, toolNamesOf,
   exportMarker, deleteMarker, sanitizeInline, exportFileName, renderExport,
-  writeExport, listExports, deleteExports, removeExportFile, sessionDir,
+  writeExport, listExports, deleteExports, removeExportFile, sessionDir, widenForPairing,
 } from '../lib/core.js';
 
 // Minimal session: surface = every message event seq.
@@ -121,4 +121,19 @@ test('export store: write, list by name only, delete, path escapes refused', () 
   assert.deepEqual(r3.deleted, ['b.md']);
   assert.equal(fs.existsSync(path.join(root, sid)), false, 'all:true removes the session dir');
   fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('widenForPairing pulls in the call of an edge result and the result of an edge call', () => {
+  const s = makeSession([
+    user(1, 'go'),
+    call(2, 'a', 'web_fetch'), result(3, 'a', 'page A'),
+    call(4, 'b', 'web_fetch'), result(5, 'b', 'page B'),
+    call(6, 'c', 'bash'), result(7, 'c', 'out'),
+  ]);
+  // start on result 3 (call at 2), end on call 6 (result at 7)
+  assert.deepEqual(widenForPairing(s, 3, 6), { start: 2, end: 7 });
+  // already balanced range is unchanged
+  assert.deepEqual(widenForPairing(s, 4, 5), { start: 4, end: 5 });
+  // a plain user message stays as is
+  assert.deepEqual(widenForPairing(s, 1, 1), { start: 1, end: 1 });
 });

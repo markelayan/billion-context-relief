@@ -51,17 +51,18 @@ function harness({ compressResult = 'Compressed 1 block(s), ~900 tokens reclaime
 test('context_export writes the file first, then calls ACP compress with the pointer and minCompressRange 0', async () => {
   const h = harness();
   const text = await h.run('context_export', { startSeq: 'm00003', endSeq: 4, name: 'big log', note: 'bash output' });
-  assert.match(text, /^Exported 2 messages \(seqs 3–4/);
+  assert.match(text, /^Exported 3 messages \(seqs 2–4/);
   assert.equal(h.compressCalls.length, 1);
   const { env, args } = h.compressCalls[0];
   assert.equal(env.coreOverrides.compress.minCompressRange, 0, 'per-call override');
   assert.equal(h.engine.env.coreOverrides.compress.minCompressRange, 5000, 'engine config untouched');
   assert.equal(env.compressCallIdsToHide, undefined, 'our tool call is not hidden');
   const summary = args.content[0].summary;
-  assert.match(summary, /^\[CONTEXT EXPORTED \(temp file\) → .*big-log\.md · 2 msgs · seqs 3–4 .*note: bash output/);
+  assert.match(summary, /^\[CONTEXT EXPORTED \(temp file\) → .*big-log\.md · 3 msgs · seqs 2–4 .*note: bash output/);
   const file = summary.match(/→ (\S+\.md)/)[1];
   assert.match(fs.readFileSync(file, 'utf8'), /BIG LOG LINE/);
   assert.equal(text.includes('BIG LOG LINE'), false, 'tool result never contains the content');
+  assert.match(text, /seqs 2–4/, 'a range starting on a tool result includes its call (seq 2)');
 });
 
 test('context_export removes its file when ACP refuses', async () => {
@@ -83,8 +84,8 @@ test('context_delete needs a reason, and confirm above the token threshold', asy
   assert.match(await h.run('context_delete', { startSeq: 3, endSeq: 4, reason: 'dead-end log' }), /confirm:true/);
   assert.equal(h.compressCalls.length, 0);
   const ok = await h.run('context_delete', { startSeq: 3, endSeq: 4, reason: 'dead-end log', confirm: true });
-  assert.match(ok, /^Deleted 2 messages/);
-  assert.equal(h.compressCalls[0].args.content[0].summary, '[DELETED REFERENCES · seqs 3–4 · 2 msgs · ~9.6K tok · reason: dead-end log]');
+  assert.match(ok, /^Deleted 3 messages/);
+  assert.equal(h.compressCalls[0].args.content[0].summary, '[DELETED REFERENCES · seqs 2–4 · 3 msgs · ~9.6K tok · reason: dead-end log]');
 });
 
 test('small rows can be deleted alone (no 5,000-char floor)', async () => {

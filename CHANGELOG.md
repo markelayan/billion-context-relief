@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 (2026-10-04)
+
+- Fix: a range that starts on a tool result (or ends on a tool call) now includes the other half of the pair. ACP's range resolver shrinks to a balanced remainder, so `context_export 308–320` used to act on 311–320 and leave the first result (seq 308) in context. Found in the live ATLAS-23 test.
+- Protected-zone refusals now report the protected zone instead of a tool-pairing error.
+
 ## 0.1.0 (2026-10-04)
 
 First release. Replaces the old local `dsh-ctxdel` plugin; its automatic deletion sweep is gone entirely.

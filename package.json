@@ -1,6 +1,6 @@
 {
   "name": "billion-context-relief",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Agent-requested context relief for DSH — companion to billion-context-dsh (ACP). context_export moves a range to a temp file and leaves a path pointer (the model never reads it); context_delete drops a range with a DELETED REFERENCES marker; context_large_blocks lists oversized items; context_exports manages export files by name. Every replacement is a normal ACP block. Nothing runs automatically except an inform-only advisor notice.",
   "type": "module",
   "main": "lib/index.js",
