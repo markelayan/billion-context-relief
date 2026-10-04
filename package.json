@@ -1,0 +1,54 @@
+{
+  "name": "billion-context-relief",
+  "version": "0.1.0",
+  "description": "Agent-requested context relief for DSH — companion to billion-context-dsh (ACP). context_export moves a range to a temp file and leaves a path pointer (the model never reads it); context_delete drops a range with a DELETED REFERENCES marker; context_large_blocks lists oversized items; context_exports manages export files by name. Every replacement is a normal ACP block. Nothing runs automatically except an inform-only advisor notice.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/**/*.js",
+    "cordis.patch.yml",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/core.test.mjs test/host.test.mjs"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "billion-context-dsh",
+    "acp",
+    "context",
+    "compaction"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "compatibility": {
+      "dshReleases": {
+        "0.2.0-rc.2": "compatible"
+      }
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "billion-context-dsh": "*"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markelayan/billion-context-relief.git"
+  },
+  "homepage": "https://github.com/markelayan/billion-context-relief#readme",
+  "publishConfig": {
+    "access": "public"
+  }
+}

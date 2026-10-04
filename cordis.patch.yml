@@ -1,0 +1,18 @@
+# billion-context-relief — self-mounting bundle patch (dsh.bundle.patch).
+# Companion to billion-context-dsh (ACP): requires ACP to be the active
+# compaction engine. Override any value with a same-id row in the profile's
+# own cordis.patch.yml.
+- insert:
+    - id: billion-context-relief
+      name: billion-context-relief
+      config:
+        largeMessageTokens: 4000     # single message
+        largeTurnTokens: 12000       # one completed turn
+        largeBlockTokens: 3000       # one ACP summary block
+        minUsagePct: 0.4             # advisor stays silent below this usage
+        advisorEnabled: true         # inform-only notice; never modifies context
+        advisorCooldownSteps: 8
+        maxItems: 5
+        deleteConfirmTokens: 8000    # context_delete above this needs confirm:true
+        reasonMaxChars: 120
+        exportRoot: ''               # '' → <os tmpdir>/billion-context-relief/<session-id>/
