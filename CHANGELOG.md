@@ -1,9 +1,12 @@
 # Changelog
 
+## 0.1.2 (2026-10-04)
+
+- Open-turn and protected-zone checks now run on the requested span before ACP resolves it, so those refusals say why instead of surfacing ACP's tool-pairing error (an in-flight call has no result yet). Found in the live ATLAS-24 retest.
+
 ## 0.1.1 (2026-10-04)
 
 - Fix: a range that starts on a tool result (or ends on a tool call) now includes the other half of the pair. ACP's range resolver shrinks to a balanced remainder, so `context_export 308–320` used to act on 311–320 and leave the first result (seq 308) in context. Found in the live ATLAS-23 test.
-- Protected-zone refusals now report the protected zone instead of a tool-pairing error.
 
 ## 0.1.0 (2026-10-04)
 

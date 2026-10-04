@@ -45,7 +45,7 @@ function harness({ compressResult = 'Compressed 1 block(s), ~900 tokens reclaime
   };
   apply(ctx, { exportRoot: root, advisorCooldownSteps: 2 });
   const run = (name, args) => tools[name].execute(args, { agent, callId: 'call-x' }).then((r) => r.text);
-  return { run, compressCalls, injected, listeners, agent, root, engine };
+  return { run, compressCalls, injected, listeners, agent, root, engine, acp: fakeAcp };
 }
 
 test('context_export writes the file first, then calls ACP compress with the pointer and minCompressRange 0', async () => {
@@ -76,6 +76,14 @@ test('protected zone and open turn are refused before ACP is called', async () =
   const h = harness();
   assert.match(await h.run('context_delete', { startSeq: 12, endSeq: 13, reason: 'x' }), /open\) turn|protected zone/);
   assert.equal(h.compressCalls.length, 0);
+});
+
+test('open-turn / protected refusals are reported even when ACP could not resolve the range', async () => {
+  const h = harness();
+  h.acp.resolveSurfaceRange = () => { throw new Error('billion-context-dsh: no tool-pairing-balanced live remainder'); };
+  const text = await h.run('context_delete', { startSeq: 12, endSeq: 12, reason: 'x' });
+  assert.match(text, /open\) turn|protected zone/);
+  assert.doesNotMatch(text, /tool-pairing/);
 });
 
 test('context_delete needs a reason, and confirm above the token threshold', async () => {
