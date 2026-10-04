@@ -1,5 +1,12 @@
 # billion-context-relief
 
+[![npm](https://img.shields.io/npm/v/billion-context-relief?label=npm)](https://www.npmjs.com/package/billion-context-relief)
+[![GitHub release](https://img.shields.io/github/v/release/markelayan/billion-context-relief)](https://github.com/markelayan/billion-context-relief/releases)
+[![license](https://img.shields.io/github/license/markelayan/billion-context-relief)](LICENSE)
+
+- **npm:** [`billion-context-relief`](https://www.npmjs.com/package/billion-context-relief)
+- **GitHub:** [markelayan/billion-context-relief](https://github.com/markelayan/billion-context-relief)
+
 Agent-requested context relief for [DSH (DeepSeek Harness)](https://github.com/deepseek-ai/deepseek-harness). A companion plugin to **[billion-context-dsh](https://github.com/Tyan66666/billion-context-dsh)** (ACP).
 
 ACP lets an agent **compress** a range of its context into a summary the agent writes. Sometimes a summary is the wrong tool:
@@ -33,6 +40,8 @@ The plugin adds those two moves, plus a way to find what is worth moving (`conte
 ---
 
 ## Requirements and compatibility
+
+Package: [`billion-context-relief` on npm](https://www.npmjs.com/package/billion-context-relief). Published files: `lib/`, `cordis.patch.yml`, `README.md`, `CHANGELOG.md`, `LICENSE` (about 19 kB packed, no runtime dependencies).
 
 | Component | Version | Status |
 |---|---|---|
@@ -81,16 +90,22 @@ Install ACP first, if the profile doesn't have it yet:
 dsh plugin --profile web add "billion-context-dsh@github:Tyan66666/billion-context-dsh#2026-09-30_dsh-0.2-seam-port"
 ```
 
-Then install this plugin, from GitHub (pinned to a release tag):
-
-```bash
-dsh plugin --profile web add "billion-context-relief@github:markelayan/billion-context-relief#v0.1.2"
-```
-
-or from npm:
+Then install this plugin from **npm** (recommended):
 
 ```bash
 dsh plugin --profile web add billion-context-relief
+```
+
+Pin a version with `billion-context-relief@0.1.2`. To upgrade later:
+
+```bash
+dsh plugin --profile web update billion-context-relief
+```
+
+or from GitHub (pinned to a release tag):
+
+```bash
+dsh plugin --profile web add "billion-context-relief@github:markelayan/billion-context-relief#v0.1.2"
 ```
 
 or as a local link, for development:
