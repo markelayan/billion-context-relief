@@ -83,12 +83,13 @@ Defaults ship in this package's `cordis.patch.yml`; override them with a same-id
 
 - DSH 0.2.0-rc.2 with **billion-context-dsh** as the active compaction engine (tested against the `2026-09-30_dsh-0.2-seam-port` line). Without ACP, the tools explain why they cannot act and change nothing.
 - Uses ACP's exported `makeTools`, `resolveSurfaceRange`, `shadowedSeqsOf` and `AlreadyCompressedRangeError`.
+- When linked from a folder outside the profile, the plugin locates billion-context-dsh in `~/.dsh/profiles/*/node_modules` and uses the copy whose `AcpCompactionEngine` is the live engine's class.
 - **Reopen sessions after installing**: a session's tool list is fixed when it is composed.
 
 ## Install (local link)
 
 ```bash
-dsh plugin --profile web add "billion-context-relief@link:local-plugins/billion-context-relief"
+dsh plugin --profile web add "billion-context-relief@link:/path/to/billion-context-relief"
 ```
 
 Then restart `dsh web` and reopen the sessions that should use it.
